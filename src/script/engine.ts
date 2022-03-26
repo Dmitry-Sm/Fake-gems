@@ -17,10 +17,12 @@ const params = {
         height: 512
     },
     camera: {
-        fov: 10,
-        position: new Vec3(0, 0, 40)
+        fov: 60,
+        position: new Vec3(0, 0, 20)
     }
 }
+
+let time = 0
 
 export class Engine {
     renderer: Renderer;
