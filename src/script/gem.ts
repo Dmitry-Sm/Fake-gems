@@ -16,6 +16,7 @@ export default class Gem {
     time: number
     id: number
     static program: Program
+    static geometry: Geometry
 
     constructor(engine: Engine) {
         
@@ -27,12 +28,7 @@ export default class Gem {
 
     async create() {
 
-        const geometry = new Geometry(this.engine.gl, {
-            position: { size: 3, data: new Float32Array([-0.5, 0.5, 0, -0.5, -0.5, 0, 0.5, 0.5, 0, 0.5, -0.5, 0]) },
-            uv: { size: 2, data: new Float32Array([0, 1, 1, 1, 0, 0, 1, 0]) },
-            index: { data: new Uint16Array([0, 1, 2, 1, 3, 2]) },
-        });
-
+        const geometry = Gem.getGeometry(this.engine.gl)
         const program = await this.getProgram(this.engine.gl)
 
         this.mesh = new Mesh(this.engine.gl, { mode: this.engine.gl.TRIANGLES, geometry, program });
@@ -64,6 +60,19 @@ export default class Gem {
             },
             transparent: true
         });
+    }
+
+    private static getGeometry(gl: OGLRenderingContext) {
+
+        if (Gem.geometry === undefined) {
+            Gem.geometry = new Geometry(gl, {
+                position: { size: 3, data: new Float32Array([-0.5, 0.5, 0, -0.5, -0.5, 0, 0.5, 0.5, 0, 0.5, -0.5, 0]) },
+                uv: { size: 2, data: new Float32Array([0, 1, 1, 1, 0, 0, 1, 0]) },
+                index: { data: new Uint16Array([0, 1, 2, 1, 3, 2]) },
+            });
+        }
+
+        return Gem.geometry;
     }
 
     update() {
