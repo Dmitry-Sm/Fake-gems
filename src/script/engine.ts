@@ -17,8 +17,8 @@ const params = {
         height: 512
     },
     camera: {
-        fov: 60,
-        position: new Vec3(0, 0, 20)
+        fov: 40,
+        position: new Vec3(0, 1, 10)
     }
 }
 
@@ -33,6 +33,7 @@ export class Engine {
     post: Post;
     pass: Pass;
     resolution: { value };
+    cameraTarget: Vec3;
 
     constructor() {
         this.renderer = new Renderer({
@@ -41,6 +42,7 @@ export class Engine {
         });
 
         this.gl = this.renderer.gl;
+        this.cameraTarget = new Vec3(0, 0, 1);
 
         this.post = new Post(this.gl);
         this.resolution = { value: new Vec2(this.gl.canvas.width, this.gl.canvas.height) };
@@ -72,11 +74,19 @@ export class Engine {
     update() {
         requestAnimationFrame(() => { this.update() });
 
+        this.cameraTarget.set(
+            Math.sin(time * 0.5) / 2,
+            Math.cos(time) - 1,
+            1
+        );
+        this.camera.lookAt(this.cameraTarget);
+
         this.post.render({
             scene: this.scene,
             camera: this.camera,
             target: this.textureTarget
         })
+        time += 0.002;
 
         this.post.render({
             scene: this.scene,
