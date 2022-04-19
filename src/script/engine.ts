@@ -18,7 +18,7 @@ const params = {
     },
     camera: {
         fov: 40,
-        position: new Vec3(0, 1, 10)
+        position: new Vec3(0, 0, 5)
     }
 }
 
@@ -73,13 +73,6 @@ export class Engine {
 
     update() {
         requestAnimationFrame(() => { this.update() });
-
-        this.cameraTarget.set(
-            Math.sin(time * 0.5) / 2,
-            Math.cos(time) - 1,
-            1
-        );
-        this.camera.lookAt(this.cameraTarget);
 
         this.post.render({
             scene: this.scene,

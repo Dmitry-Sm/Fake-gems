@@ -16,22 +16,13 @@ export class Game {
 
     async start() {
 
-        const num = 2000
-        const rows = 32
+        const num = 1
         this.lightPosition = new Vec3(0)
 
-        for (let i = 0; i < num; i++) {    
-            const gem = new Gem(this.engine);
-            await gem.create();
-            this.gems.push(gem);
-            gem.container.position.set(
-                (i % rows - (rows - 1) / 2) * 1., 
-                0, 
-                -Math.floor(i / rows) * 2 + 4)
-            const gemsContainer = new Transform()
-            this.engine.scene.addChild(gemsContainer)
-            gemsContainer.addChild(gem.container)
-        }
+        const gem = new Gem(this.engine);
+        await gem.create();
+        this.gems.push(gem);
+        this.engine.scene.addChild(gem.container);
 
         this.update();
     }
@@ -39,18 +30,18 @@ export class Game {
     private update() {
         requestAnimationFrame(() => { this.update() });
         this.lightPosition.set(
-            Math.sin(this.time) * 12, 
-            Math.cos(this.time * 0.85) * 0 + 6,
-            Math.sin(this.time * 0.15) * 20 - 20
+            Math.sin(this.time) * 0.5, 
+            Math.cos(this.time * 0.85) * 1 - 0,
+            Math.sin(this.time * 0.15) * 0. + 1.2
         )
 
         this.gems.forEach(gem => {
             gem.update();
             gem.mesh.program.uniforms.uLightPosition.value = this.lightPosition
-            gem.container.position.y = this.getY(gem.container.position);
+        //     gem.container.position.y = this.getY(gem.container.position);
         });
 
-        this.time += 0.01;
+        this.time += 0.02;
     }
 
     private getY(pos: Vec3): number {

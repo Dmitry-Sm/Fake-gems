@@ -1,12 +1,12 @@
 import { Geometry, Mesh, OGLRenderingContext, Program, Texture, Transform, Vec3 } from "ogl-typescript";
-import { Engine } from "./engine";
+import { Engine } from './engine';
 import renderTexture from '../assets/1-r.png';
 import backDistMapTexture from '../assets/1-bd.png';
 import frontDistMapTexture from '../assets/1-fd.png';
 import normalMapTexture from '../assets/1-n.png';
 import fragment from '../assets/gem.fragment.glsl';
 import vertex from '../assets/gem.vertex.glsl';
-import Assets from "./assets";
+import Assets from './assets';
 
 export default class Gem {
 
@@ -35,6 +35,7 @@ export default class Gem {
         this.container.addChild(this.mesh);
         // this.mesh.rotation.z = Math.random() * Math.PI * 2
         // this.mesh.scale.set(Math.random() * 0.5 + 0.5)
+        this.mesh.scale.set(3)
 
         this.update();
     }
@@ -56,7 +57,7 @@ export default class Gem {
                 uColor: { value: new Vec3(Math.random(), Math.random(), Math.random()) },
                 uNormalMap: { value: await Assets.getTexture(gl, normalMapTexture) },
                 uPosition: { value: new Vec3(0) },
-                uLightPosition: { value: new Vec3(0, 5, 0) }
+                uLightPosition: { value: new Vec3(0, 0, 0) }
             },
             transparent: true
         });
