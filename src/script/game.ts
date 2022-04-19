@@ -16,13 +16,20 @@ export class Game {
 
     async start() {
 
-        const num = 1
+        const num = 4
+        const rows = 4
         this.lightPosition = new Vec3(0)
 
-        const gem = new Gem(this.engine);
-        await gem.create();
-        this.gems.push(gem);
-        this.engine.scene.addChild(gem.container);
+        for (let i = 0; i < num; i++) {
+            const gem = new Gem(this.engine);
+            await gem.create();
+            gem.container.position.set(
+                (i % rows - (rows - 1) / 2) * 3., 
+                0, 
+                -Math.floor(i / rows) * 4 - 2);
+            this.gems.push(gem);
+            this.engine.scene.addChild(gem.container);
+        }
 
         this.update();
     }
@@ -32,7 +39,7 @@ export class Game {
         this.lightPosition.set(
             Math.sin(this.time) * 1.5, 
             Math.cos(this.time) * 1.5 + 0.5,
-            Math.sin(this.time * 0.15) * 0. + 1.2
+            Math.sin(this.time * 0.15) * 1. - 1.
         )
 
         this.gems.forEach(gem => {

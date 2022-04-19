@@ -18,7 +18,8 @@ const params = {
     },
     camera: {
         fov: 40,
-        position: new Vec3(0, 0, 5)
+        position: new Vec3(0, 2, 5),
+        target: new Vec3(0, -1, -10)
     }
 }
 
@@ -33,7 +34,6 @@ export class Engine {
     post: Post;
     pass: Pass;
     resolution: { value };
-    cameraTarget: Vec3;
 
     constructor() {
         this.renderer = new Renderer({
@@ -42,7 +42,6 @@ export class Engine {
         });
 
         this.gl = this.renderer.gl;
-        this.cameraTarget = new Vec3(0, 0, 1);
 
         this.post = new Post(this.gl);
         this.resolution = { value: new Vec2(this.gl.canvas.width, this.gl.canvas.height) };
@@ -55,6 +54,7 @@ export class Engine {
             fov: params.camera.fov
         });
         this.camera.position.set(params.camera.position);
+        this.camera.lookAt(params.camera.target);
 
         window.addEventListener('resize', () => { this.resize() }, false);
         this.resize();
