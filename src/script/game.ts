@@ -30,8 +30,8 @@ export class Game {
     private update() {
         requestAnimationFrame(() => { this.update() });
         this.lightPosition.set(
-            Math.sin(this.time) * 0.5, 
-            Math.cos(this.time * 0.85) * 1 - 0,
+            Math.sin(this.time) * 1.5, 
+            Math.cos(this.time) * 1.5 + 0.5,
             Math.sin(this.time * 0.15) * 0. + 1.2
         )
 
@@ -41,7 +41,7 @@ export class Game {
         //     gem.container.position.y = this.getY(gem.container.position);
         });
 
-        this.time += 0.02;
+        this.time += 0.01;
     }
 
     private getY(pos: Vec3): number {

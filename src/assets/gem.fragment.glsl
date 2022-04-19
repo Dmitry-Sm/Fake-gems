@@ -31,45 +31,26 @@ void main() {
 
     vec3 pos = uPosition + vec3(uv.x - 0.5, uv.y - 0.5, 0.) * 2.;
     float li = dot(n, uLightPosition - pos);
-    li *= smoothstep(3., 0., length(uLightPosition - pos));
-    li = smoothstep(0., 1., li);
+    li *= smoothstep(4., 0., length(uLightPosition - pos));
+    li = smoothstep(0.6, 0.9, li);
     
     vec3 col = vec3(0);
-    col = r.rgb * li * 1.;
-    // col += (vec3(li) * 0.05);
-    // col += r.rgb * 0.1;
+    col = vec3(li) * 0.4;
     float bt = texture2D(uBackDistanceMap, uv).r - uPosition.z;
     float ft = texture2D(uFrontDistanceMap, uv).r - uPosition.z;
-    // float ft = 1. - bt;
 
-    // float f = smoothstep(0.2, 1., sin(uTime));
-    vec2 waveWidth = vec2(0.4, 0.4);
-    float t = fract(uTime * 0.2) * (1. + waveWidth.x + waveWidth.y) - waveWidth.x;
-    t = fract(uTime);
-    t = 0.5;
-    // bt = fract(bt * 4.);
+    vec2 waveWidth = vec2(0.6, 0.6);
+    float t = 0.5;
     float ff = ft;
     float bf = ft;
     ft = fract(ft * 4. - uTime * 0.4);
     bt = fract(bt * 4. - uTime * 0.4);
-    // t = fract(uTime * 0.5);
-    // t = fract(t * 4.) / 4. + floor(t / 4.);
-    // float t = fract(uTime * 0.2) * 2. - 0.;
-    // float t = fract(uTime * 1.) * 1. + 0.5;
-    // float t = fract(uTime);
     float bb = smoothstep(t - waveWidth.y, t, bt) - smoothstep(t, t + waveWidth.x, bt);
     float fb = smoothstep(t - waveWidth.y, t, ft) - smoothstep(t, t + waveWidth.x, ft);
-    // vec3 rb = rainbow(bb);
-    // vec3 c1 = mix(col, rb, bb) * 0.2;
-    // vec3 c2 = mix(col, rb, fb) * 0.2;
-    vec3 c1 = rainbow(bf * 2.) * 0.5 * bb;
-    vec3 c2 = rainbow(ff * 2.) * fb;
-    vec3 c3 = mix(c1, c2, 0.5);\
-    // c3 = vec3(ft);
-    // col = max(c3 * r.a, col);
-    col = c3 * (0.1 + col.r);
-    // col = mix(col, r.rgb * uColor, bb * 0.5);
-    // col = mix(col, r.rgb, fb);
+    vec3 c1 = rainbow(bf * 2. - uTime * 0.1) * 0.05 * bb;
+    vec3 c2 = rainbow(ff * 2. - uTime * 0.1) * fb;
+    vec3 c3 = mix(c1, c2, max(li, r.r));
+    col = max(col, c3);
 
     gl_FragColor.rgb = col;
     gl_FragColor.a = r.a;
